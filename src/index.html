@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React-like HTML</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div style="text-align: right; padding: 20px;">
+      <button onclick="toggleTheme()" style="margin-bottom: 20px;">Ganti Tema</button>
+    </div>
+    <div id="content"></div>
+  </div>
+
+  <script>
+    const themes = {
+      light: {
+        background: "#f5f5f5",
+        text: "#333",
+        buttonBackground: "#4caf50",
+        buttonTextColor: "#fff",
+      },
+      dark: {
+        background: "#333",
+        text: "#f5f5f5",
+        buttonBackground: "#222",
+        buttonTextColor: "#fff",
+      },
+    };
+
+    let isLoggedIn = false;
+    let isRegisterMode = false;
+    let username = "";
+    let theme = "light";
+
+    function handleRegister(username, password) {
+      setUsername(username);
+      isRegisterMode = false;
+      render();
+    }
+
+    function handleLogin(username, password) {
+      setUsername(username);
+      isLoggedIn = true;
+      render();
+    }
+
+    function switchToRegister() {
+      isRegisterMode = true;
+      render();
+    }
+
+    function switchToLogin() {
+      isRegisterMode = false;
+      render();
+    }
+
+    function toggleTheme() {
+      theme = theme === "light" ? "dark" : "light";
+      render();
+    }
+
+    function render() {
+      const contentDiv = document.getElementById("content");
+      if (!isLoggedIn) {
+        if (isRegisterMode) {
+          contentDiv.innerHTML = `
+            <div class="auth-container" style="background: ${themes[theme].background}; color: ${themes[theme].text};">
+              <h2>Register</h2>
+              <input type="text" placeholder="Username">
+              <br>
+              <br>
+              <input type="password" placeholder="Password">
+              <br>
+              <br>
+              <button class="auth-button" style="background: ${themes[theme].buttonBackground}; color: ${themes[theme].buttonTextColor};">Register</button>
+              <p>Sudah memiliki akun? <button class="auth-link" onclick="switchToLogin()">Login</button></p>
+            </div>
+          `;
+        } else {
+          contentDiv.innerHTML = `
+            <div class="auth-container" style="background: ${themes[theme].background}; color: ${themes[theme].text};">
+              <h2>Login</h2>
+              <input type="text" placeholder="Username">
+              <br>
+              <br>
+              <input type="password" placeholder="Password">
+              <br>
+              <br>
+              <button class="auth-button" style="background: ${themes[theme].buttonBackground}; color: ${themes[theme].buttonTextColor};">Login</button>
+              <p>Belum memiliki akun? <button class="auth-link" onclick="switchToRegister()">Register</button></p>
+            </div>
+          `;
+        }
+      } else {
+        contentDiv.innerHTML = `
+          <div style="background: ${themes[theme].background}; color: ${themes[theme].text};">
+            <h2>Message App</h2>
+            <textarea rows="4" cols="50" placeholder="Type your message..."></textarea>
+            <button style="background: ${themes[theme].buttonBackground}; color: ${themes[theme].buttonTextColor};">Send</button>
+            <p>Mouse is out of the message area!</p>
+            <div></div>
+            <div>
+              <img src="https://akupintar.id/documents/20143/0/del1.jpg/25efd2fa-e18d-5eb9-de8c-ef9e32910614?t=1657876936629&imagePreview=1" alt="Placeholder">
+              <p>Image is loaded!</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
